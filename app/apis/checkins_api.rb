@@ -1,8 +1,8 @@
 class CheckinsApi < Grape::API
   desc 'Create an checkin'
   params do
-    requires :user_id, type: Integer
-    requires :location_id, type: Integer
+    requires :user_id, type: Integer, desc: "The ID of the user checking in"
+    requires :location_id, type: Integer, desc: "The ID of the location the user is checking into"
   end
 
   post do
@@ -10,4 +10,18 @@ class CheckinsApi < Grape::API
     error!(present_error(:record_invalid, checkin.errors.full_messages)) unless checkin.errors.empty?
     represent checkin, with: CheckinRepresenter
   end
+
+  params do
+    requires :user_id, type: Integer, desc: "The ID of the user with checkins"
+  end
+  resource :user do
+    route_param :user_id do
+      desc 'Get user checkins'
+      get do
+        checkins = Checkin.where(user_id: params[:user_id])
+        represent checkins, with: CheckinRepresenter
+      end
+    end
+  end
+
 end

@@ -30,4 +30,27 @@ describe CheckinsApi do
       end.to_not change { Checkin.count }
     end
   end
+
+  describe 'GET /checkins/user/:user_id' do
+    before(:all) do
+      Checkin.create(user_id: 1, location_id: 2)
+      Checkin.create(user_id: 1, location_id: 3)
+      Checkin.create(user_id: 2, location_id: 3)
+    end
+
+    it "returns all checkins for a given user id" do
+      get '/checkins/user/1'
+      expect(JSON.parse(last_response.body)["data"].count).to eq(2)
+    end
+
+    it "returns no checkins for a user that has not checked in anywhere" do
+      get '/checkins/user/9000'
+      expect(JSON.parse(last_response.body)["data"]).to be_empty
+    end
+
+    it "fails if not given a user id" do
+      get '/checkins/user'
+      expect(last_response.status).to eq(404)
+    end
+  end
 end
