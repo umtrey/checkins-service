@@ -6,6 +6,11 @@ end
 
 describe CheckinsApi do
   include Rack::Test::Methods
+  before(:all) do
+    Checkin.create(user_id: 1, location_id: 2)
+    Checkin.create(user_id: 1, location_id: 3)
+    Checkin.create(user_id: 2, location_id: 3)
+  end
 
   describe 'POST /checkins' do
     it 'creates a new checkin' do
@@ -32,15 +37,9 @@ describe CheckinsApi do
   end
 
   describe 'GET /checkins/user/:user_id' do
-    before(:all) do
-      Checkin.create(user_id: 1, location_id: 2)
-      Checkin.create(user_id: 1, location_id: 3)
-      Checkin.create(user_id: 2, location_id: 3)
-    end
-
     it "returns all checkins for a given user id" do
       get '/checkins/user/1'
-      expect(JSON.parse(last_response.body)["data"].count).to eq(2)
+      expect(JSON.parse(last_response.body)["data"].count).to eq(Checkin.where(user_id: 1).count)
     end
 
     it "returns no checkins for a user that has not checked in anywhere" do
@@ -55,15 +54,9 @@ describe CheckinsApi do
   end
 
   describe 'GET /checkins/location/:location_id' do
-    before(:all) do
-      Checkin.create(user_id: 10, location_id: 12)
-      Checkin.create(user_id: 10, location_id: 13)
-      Checkin.create(user_id: 11, location_id: 13)
-    end
-
     it "returns all checkins for a given user id" do
-      get '/checkins/location/13'
-      expect(JSON.parse(last_response.body)["data"].count).to eq(2)
+      get '/checkins/location/3'
+      expect(JSON.parse(last_response.body)["data"].count).to eq(Checkin.where(location_id: 3).count)
     end
 
     it "returns no checkins for a user that has not checked in anywhere" do
