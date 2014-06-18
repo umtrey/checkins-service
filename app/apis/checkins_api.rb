@@ -24,4 +24,17 @@ class CheckinsApi < Grape::API
     end
   end
 
+  params do
+    requires :location_id, type: Integer, desc: "The ID of the location users are checking in to"
+  end
+  resource :location do
+    route_param :location_id do
+      desc 'Get location checkins'
+      get do
+        checkins = Checkin.where(location_id: params[:location_id])
+        represent checkins, with: CheckinRepresenter
+      end
+    end
+  end
+
 end
