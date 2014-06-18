@@ -15,11 +15,11 @@ describe CheckinsApi do
     end
 
     it "returns details of the newly created checkin" do
-      post '/checkins', user_id: 1, location_id: 1
+      post '/checkins', user_id: 2, location_id: 2
       json_response = JSON.parse(last_response.body)["data"]
       expect(json_response["id"]).to eq(Checkin.last.id)
-      expect(json_response["user_id"]).to eq(1)
-      expect(json_response["location_id"]).to eq(1)
+      expect(json_response["user_id"]).to eq(2)
+      expect(json_response["location_id"]).to eq(2)
       expect(json_response.keys).to include("created_at")
     end
 
