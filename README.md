@@ -23,4 +23,20 @@ The following API endpoints are implemented.
 
 Requires: `user_id`, `location_id`
 
-Creates new checkin object.
+Creates a new checkin for the given user at the given location.
+
+Note: user_id and location_id must have corresponding users and
+locations in the database. Hypothetically, another service would be
+managing these objects as represented in the database.
+
+### GET /checkins/user/:user_id
+
+Requires: n/a
+
+Retrieves all checkins for the given user.
+
+### GET /checkins/location/:location_id
+
+Requires: n/a
+
+Retrieves all checkins for the given location.

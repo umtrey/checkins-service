@@ -1,23 +1,23 @@
 require 'spec_helper'
 
 describe Checkin do
+  let(:user)     { create(:user) }
+  let(:location) { create(:location) }
+
   describe "validations" do
     it "should not create a checkin if no location provided" do
-      expect(Checkin.new(user_id: 1)).to_not be_valid
+      expect(Checkin.new(user: user)).to_not be_valid
     end
 
     it "should not create a checkin if no user provideD" do
-      expect(Checkin.new(location_id: 1)).to_not be_valid
+      expect(Checkin.new(location: location)).to_not be_valid
     end
   end
 
   describe "#time_since_last_checkin" do
-    before(:all) do
-      Checkin.create(user_id: 1, location_id: 1)
-    end
-
     it "does not return nil if there has been a checkin for the user" do
-      expect(Checkin.time_since_last_checkin(1)).to_not be_nil
+      create(:checkin, user: user, location: location)
+      expect(Checkin.time_since_last_checkin(user.id)).to_not be_nil
     end
 
     it "returns nil if there has not been a checkin for the user" do

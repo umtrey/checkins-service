@@ -7,7 +7,7 @@ class CheckinsApi < Grape::API
 
   post do
     checkin = Checkin.create(declared(params, include_missing: false))
-    error!(present_error(:record_invalid, checkin.errors.full_messages)) unless checkin.errors.empty?
+    error!(present_error(:record_invalid, checkin.errors.full_messages)) unless checkin.valid?
     represent checkin, with: CheckinRepresenter
   end
 

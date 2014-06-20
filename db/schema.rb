@@ -10,18 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140618021022) do
+ActiveRecord::Schema.define(version: 20140620013126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "checkins", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "location_id"
+    t.integer  "user_id",     null: false
+    t.integer  "location_id", null: false
     t.datetime "created_at"
   end
 
   add_index "checkins", ["location_id"], name: "index_checkins_on_location_id", using: :btree
   add_index "checkins", ["user_id"], name: "index_checkins_on_user_id", using: :btree
+
+  create_table "locations", force: true do |t|
+    t.decimal  "latitude"
+    t.decimal  "longitude"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: true do |t|
+  end
 
 end
