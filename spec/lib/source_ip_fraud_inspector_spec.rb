@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SourceIpFraudInspector do
   it "returns true if source of checkin is nil" do
-    checkin = create(:checkin)
+    checkin = create(:checkin, source: nil)
     expect(SourceIpFraudInspector.inspect(checkin)).to be true
   end
 
