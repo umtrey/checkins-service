@@ -53,6 +53,11 @@ describe CheckinsApi do
         expect(last_response.status).to eq(500)
       end.to_not change { Checkin.count }
     end
+
+    it "saves the request IP address" do
+      post 'checkins', user_id: user.id, location_id: location.id
+      expect(Checkin.last.source).to eq('127.0.0.1')
+    end
   end
 
   describe "object-related GET methods" do
