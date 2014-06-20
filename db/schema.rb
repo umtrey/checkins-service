@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140620125730) do
+ActiveRecord::Schema.define(version: 20140620191312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "checkin_fraud_alerts", force: true do |t|
+    t.integer  "checkin_id",  null: false
+    t.integer  "fraud_alert", null: false
+    t.text     "detail"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "checkins", force: true do |t|
     t.integer  "user_id",     null: false

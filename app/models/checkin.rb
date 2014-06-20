@@ -7,6 +7,8 @@ class Checkin < ActiveRecord::Base
   belongs_to :location
   validates :location, presence: true
 
+  has_many :checkin_fraud_alerts
+
   validates_numericality_of :latitude,  allow_nil: true,
                                         greater_than_or_equal_to: -90,
                                         less_than_or_equal_to: 90
