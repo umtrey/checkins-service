@@ -20,6 +20,8 @@ class Checkin < ActiveRecord::Base
   validate :both_geolocation_coordinates_must_be_provided
 
   scope :recent,      ->          { order(created_at: :desc) }
+  scope :prior_to,    ->(time)    { where("created_at < ?", time) }
+  scope :since,       ->(time)    { where("created_at > ?", time) }
   scope :for_user_id, ->(user_id) { where(user_id: user_id) }
 
   def self.time_since_last_checkin(user_id)
