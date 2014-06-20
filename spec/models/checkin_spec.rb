@@ -12,6 +12,25 @@ describe Checkin do
     it "should not create a checkin if no user provideD" do
       expect(Checkin.new(location: location)).to_not be_valid
     end
+
+    it "can take in a valid latitude and longitude" do
+      expect(Checkin.new(checkin_params.merge(latitude: 0, longitude: 0))).to be_valid
+    end
+
+    it "requires latitude to be between -90 and 90" do
+      expect(Checkin.new(checkin_params.merge(latitude: 100, longitude: 0))).to_not be_valid
+      expect(Checkin.new(checkin_params.merge(latitude: -100, longitude: 0))).to_not be_valid
+    end
+
+    it "requires longitude to be between -180 and 180" do
+      expect(Checkin.new(checkin_params.merge(latitude: 0, longitude: 190))).to_not be_valid
+      expect(Checkin.new(checkin_params.merge(latitude: 0, longitude: -190))).to_not be_valid
+    end
+
+    it "requires both latitude and longitude to be given, if one is given" do
+      expect(Checkin.new(checkin_params.merge(latitude: 0))).to_not be_valid
+      expect(Checkin.new(checkin_params.merge(longitude: 0))).to_not be_valid
+    end
   end
 
   describe "#time_since_last_checkin" do
@@ -27,5 +46,11 @@ describe Checkin do
     it "returns nil if the user id is invalid" do
       expect(Checkin.time_since_last_checkin(nil)).to be_nil
     end
+  end
+
+private
+  def checkin_params
+    { user: user,
+      location: location }
   end
 end
