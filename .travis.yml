@@ -1,6 +1,0 @@
-language: ruby
-rvm:
-  - 2.0.0
-script:
-  - RACK_ENV=test bundle exec rake db:reset --trace
-  - rake
