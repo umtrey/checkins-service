@@ -3,6 +3,9 @@
 Super simple checkin service, built to play around with
 [Napa](https://github.com/bellycard/napa).
 
+i[![Build
+Status](https://travis-ci.org/umtrey/checkins-service.svg)](https://travis-ci.org/umtrey/checkins-service)
+
 ## Getting Started
 
 ```
