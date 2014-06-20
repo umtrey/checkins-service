@@ -1,6 +1,8 @@
 class Checkin < ActiveRecord::Base
   include Napa::FilterByHash
 
+  validates_presence_of :location_id, :user_id
+
   scope :recent,   ->          { order(created_at: :desc) }
   scope :for_user, ->(user_id) { where(user_id: user_id) }
 
