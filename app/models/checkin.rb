@@ -1,5 +1,6 @@
 class Checkin < ActiveRecord::Base
   include Napa::FilterByHash
+  after_save :validate_checkin
 
   belongs_to :user
   validates :user, presence: true
@@ -34,5 +35,9 @@ private
     if (latitude.nil? ^ longitude.nil?)
       errors.add(:geolocation, "Must supply both latitude and longitude, or neither!")
     end
+  end
+
+  def validate_checkin
+    CheckinFraudAlert.verify_checkin(self)
   end
 end
